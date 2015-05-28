@@ -1,0 +1,41 @@
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+ $(document).ready(function(){
+
+    $('.inline-group fieldset').addClass('collapsed');
+    $('.inline-group h3 .inline_label').append(' (<a class="collapse-toggle" href="#">Show</a>)');
+
+	$('.inline-group h3 .inline_label .collapse-toggle').live('click', function(evt) {
+    $(this).closest('.inline-related').find('fieldset').toggleClass('collapsed');
+    text = $(this).html();
+    if (text=='Show') {
+      $(this).html('Hide');
+    } else {
+      $(this).html('Show');
+    };
+    evt.preventDefault();
+    evt.stopPropagation();
+  });
+  // Un-collapse empty forms, otherwise it's 2 clicks to create a new one.
+  $('.empty-form .collapse-toggle').click();
+  // Un-collapse any objects with errors.
+  $('.inline-group .errors').closest('.inline-related').find('.collapse-toggle').click();
+});
+
+</script>
+
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Sistema de Inventario de Equipos de C&oacute;mputo</a></h1>
+{% endblock %}
+
+
+
+{% block nav-global %}{% endblock %}
+
