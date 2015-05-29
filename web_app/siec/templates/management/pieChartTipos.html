@@ -1,5 +1,4 @@
-{% extends "admin/base.html" %}
-{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% extends "admin/base_site.html" %}
 
 
 {% block branding %}
@@ -12,6 +11,32 @@
   <div>
   <img src="{{ lachart }}" />
   </div>
+
+  	{% if equipos %}
+  		<table>
+  			<thead>
+	  			<tr>
+	  				<th>Tipo</th>
+	  				<th>Responsable</th>
+	  				<th>Marca</th>
+	  				<th>Modelo</th>
+	  				<th>Ubicaci&oacute;n</th>
+	  			</tr>
+  			</thead>
+  			{% for eq in equipos %}
+  				<tr>
+  					<td><a href="{{ eq.id }}">{{ eq.tipo }}</a></td>
+  					<td>{{ eq.user }}</td>
+  					<td>{{ eq.marca }}</td>
+  					<td>{{ eq.modelo }}</td>
+  					<td>{{ eq.ubicacion }}</td>
+  				</tr>
+  			{% endfor %}
+  		</table>
+  	{% else %}
+		<strong>No equipos currently in mantenimiento.</strong>
+	{% endif %}
+
 
 {% endblock content %}
 

@@ -1,15 +1,10 @@
-{% extends "admin/base.html" %}
-{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
-
-
-{% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">Sistema de Inventario de Equipos de C&oacute;mputo</a></h1>
-{% endblock %}
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
 
 {% block content %}
 
 	<h1>{{ titulo }}</h1>
-	<br><br>
+	<br><br
   <div>
   	{% if equipos %}
   		<table>
