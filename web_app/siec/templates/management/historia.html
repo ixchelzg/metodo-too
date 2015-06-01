@@ -1,0 +1,81 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block content %}
+
+	<h1>{{ titulo }}</h1>
+  <a href="{{ request.META.HTTP_REFERER }}"> Regresar </a>
+	<br><br>
+  <div>
+  	{% if equipos %}
+  		<table>
+  			<thead>
+	  			<tr>
+	  				<th>Tipo</th>
+	  				<th>Responsable</th>
+	  				<th>Marca</th>
+	  				<th>Modelo</th>
+	  				<th>Ubicaci&oacute;n</th>
+	  			</tr>
+  			</thead>
+  				<tr>
+  					<td>{{ equipos.tipo }}</td>
+  					<td>{{ equipos.user }}</td>
+  					<td>{{ equipos.marca }}</td>
+  					<td>{{ equipos.modelo }}</td>
+  					<td>{{ equipos.ubicacion }}</td>
+  				</tr>
+  		</table>
+  	{% else %}
+		<strong>No encontre ese equipo.</strong>
+	{% endif %}
+  </div>
+  <div>
+    {% if reparaciones %}
+    <table>
+      <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Motivo</th>
+            <th>Reparaci&oacute;n</th>
+          </tr>
+        </thead>
+      {% for eq in reparaciones %}
+          <tr>
+            <td>{{ eq.fecha }}</td>
+            <td>{{ eq.motivo }}</td>
+            <td>{{ eq.descipcion }}</td>
+          </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <strong>No ha estado nunca en reparaci&oacute;n.</strong>
+    {% endif %}
+  </div>
+
+{% if action_list %}
+    <table id="change-history">
+        <thead>
+        <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Acci&oacute;n que realiz&oacute;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for action in action_list %}
+        <tr>
+            <th scope="row">{{ action.action_time|date:"DATETIME_FORMAT" }}</th>
+            <td>{{ action.user.get_username }}{% if action.user.get_full_name %} ({{ action.user.get_full_name }}){% endif %}</td>
+            <td>{{ action.change_message }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>{% trans "This object doesn't have a change history." %}</p>
+{% endif %}
+</div>
+{% endblock content %}
+
+{% block nav-global %}{% endblock %}

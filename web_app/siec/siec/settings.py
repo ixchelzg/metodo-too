@@ -75,7 +75,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-us'
 
 TIME_ZONE = 'UTC'
 
@@ -111,3 +111,6 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
+
+ADMIN_TOOLS_INDEX_DASHBOARD = 'siec.dashboard.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'siec.dashboard.CustomAppIndexDashboard'

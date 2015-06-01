@@ -17,5 +17,6 @@ urlpatterns = [
 	url(r'^reportes/estadoequipos/$', views.porestado, name='porestado'),
 
 	url(r'^reportes/enmantenimiento/$', views.enmantenimiento, name='enmantenimiento'),
+	url(r'^equipodecomputo/historia(?P<eqid>[0-9]+)/$', views.historia),
 
 ]

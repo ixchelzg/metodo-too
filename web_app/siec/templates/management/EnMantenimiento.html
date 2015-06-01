@@ -1,6 +1,144 @@
-{% extends "admin/base_site.html" %}
-{% load i18n admin_urls %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us" >
+<head>
+<title>Site administration | Django site admin</title>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+<link rel="stylesheet" href="/static/admin_tools/css/menu.css" type="text/css" media="screen, projection"/>
+<!--[if lt IE 8]>
+<link rel="stylesheet" href="/static/admin_tools/css/menu-ie.css" type="text/css" media="screen, projection"/>
+<![endif]-->
+<link rel="stylesheet" href="/static/admin_tools/css/jquery/jquery-ui.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="/static/admin_tools/css/dashboard.css" type="text/css" media="screen, projection"/>
+<!--[if lt IE 8]>
+<link rel="stylesheet" href="/static/admin_tools/css/dashboard-ie.css" type="text/css" media="screen, projection"/>
+<![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/static/admin/css/ie.css" /><![endif]-->
+<link rel="stylesheet" type="text/css" media="screen" href="/static/admin_tools/css/theming.css" />
+<script type="text/javascript">window.__admin_media_prefix__ = "/static/admin/";</script>
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
 
+<body class="dashboard">
+
+<!-- Container -->
+<div id="container">
+
+    
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+          <h1 id="site-name">Django administration</h1>
+        </div>
+        
+        <div id="user-tools">
+                    <a href="/admin/password_change/">Change password</a> / <a href="/admin/logout/"> Log out</a>
+        </div>
+        
+        
+
+
+
+
+<script type="text/javascript" src="/static/admin_tools/js/utils.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+    // Load js files syncronously and conditionally
+    var js_files = [
+        {
+            src : '/static/admin_tools/js/jquery/jquery.min.js',
+            test: function() { return typeof(jQuery) == 'undefined'; }
+        },
+        {
+            src : '/static/admin_tools/js/json.min.js',
+            test: function() { return typeof(JSON.stringify) == 'undefined'; }
+        },
+        {
+            src : '/static/admin_tools/js/menu.js',
+            test: function() { return true; }
+        }
+    ];
+
+    loadScripts(js_files, function(){
+        jQuery(function($) {
+            
+        });
+    });
+
+</script>
+<!--[if IE 6]>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    jQuery('#navigation-menu').children('li').hover(
+        function() { jQuery(this).addClass('over'); },
+        function() { jQuery(this).removeClass('over'); }
+    );
+});
+</script>
+<![endif]-->
+
+
+<ul id="navigation-menu">
+    
+<li class="menu-item first selected"><a href="/admin/">Dashboard</a></li>
+
+<li class="menu-item"><a href="#"><span class="icon"></span>Generar Reportes</a><ul><li class="menu-item"><a href="/management/reportes/tiposequipo">Tipos de equipo</a></li><li class="menu-item"><a href="/management/reportes/porresponsable">Equipos por responsable</a></li><li class="menu-item"><a href="/management/reportes/estadoequipos">Estado de los equipo</a></li><li class="menu-item"><a href="/management/reportes/enmantenimiento">Equipos en mantenimiento</a></li></ul></li>
+
+<li class="menu-item"><a href="#"><span class="icon"></span>Administrar Equipos de Computo</a><ul><li class="menu-item"><a href="/admin/management/"><span class="icon"></span>Management</a><ul><li class="menu-item"><a href="/admin/management/equipodecomputo/">Equipo de computos</a></li></ul></li></ul></li>
+
+<li class="menu-item"><a href="#"><span class="icon"></span>Administrar Usuarios</a><ul><li class="menu-item"><a href="/admin/auth/"><span class="icon"></span>Auth</a><ul><li class="menu-item"><a href="/admin/auth/user/">Users</a></li></ul></li></ul></li>
+
+</ul>
+
+    </div>
+    <!-- END Header -->
+   
+
+
+
+
+<script type="text/javascript" src="/static/admin_tools/js/utils.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+    // Load js files syncronously and conditionally
+
+    var js_files = [
+        {
+            src : '/static/admin_tools/js/jquery/jquery.min.js',
+            test: function() { return typeof(jQuery) == 'undefined'; }
+        },
+        {
+            src : '/static/admin_tools/js/jquery/jquery-ui.min.js',
+            test: function() { return typeof(jQuery.ui) == 'undefined'; }
+        },
+        {
+            src : '/static/admin_tools/js/json.min.js',
+            test: function() { return typeof(JSON.stringify) == 'undefined'; }
+        },
+        {
+            src : '/static/admin_tools/js/jquery/jquery.cookie.min.js',
+            test: function() { return typeof(jQuery.cookie) == 'undefined'; }
+        },
+        {
+            src : '/static/admin_tools/js/jquery/jquery.dashboard.js',
+            test: function() { return true; }
+        },
+        {
+            src : '/static/admin_tools/js/dashboard.js',
+            test: function() { return true; }
+        }
+    ];
+
+    loadScripts(js_files, function(){
+        jQuery(function($) {
+            init_dashboard(
+                'dashboard',
+                2,
+                {"positions":["module_2","module_3"],"columns":[2,1],"disabled":{},"collapsed":{"module_3":false,"module_2":false}},
+                '/admin_tools/dashboard/set_preferences/dashboard/'
+            );
+        });
+    });
+</script>
 {% block content %}
 
 	<h1>{{ titulo }}</h1>
@@ -42,3 +180,8 @@
 {% endblock content %}
 
 {% block nav-global %}{% endblock %}
+
+
+</div>
+</body>
+</html>

@@ -3,7 +3,8 @@ from management.models import EquipoDeComputo, Tipo, Historial, Reparacion, Esta
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.utils.html import escape
 from django.core.urlresolvers import reverse, NoReverseMatch
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.admin import UserAdmin
 
 action_names = {
     ADDITION: 'Addition',
@@ -17,7 +18,7 @@ class ReparacionInline(admin.StackedInline):
     extra = 0
 
 class EquipoDeComputoAdmin(admin.ModelAdmin):
-	fieldsets = [
+    fieldsets = [
         (None,               {'fields': ['tipo']}),
         (None,               {'fields': ['user']}),
         (None,               {'fields': ['marca']}),
@@ -25,22 +26,42 @@ class EquipoDeComputoAdmin(admin.ModelAdmin):
         (None,               {'fields': ['estado']}),
         (None,               {'fields': ['ubicacion']}),
     ]
-	inlines = [ReparacionInline]
+    inlines = [ReparacionInline]
+    #que se ve en la pag del admin
+    list_display = ('tipo', 'my_property','marca', 'modelo', 'estado', 'ubicacion','history_link', 'acciones')
+    #list_filter = ['pub_date']
+    search_fields = ['marca', 'modelo']
 
-	#que se ve en la pag del admin
-	list_display = ('tipo', 'my_property','marca', 'modelo', 'estado', 'ubicacion','history_link')
-	#list_filter = ['pub_date']
-	search_fields = ['marca', 'modelo']
+    def my_property(self,obj):
+        return obj.user
+    my_property.allow_tags = True
+    my_property.short_description = "Responsable"
 
-	def my_property(self,obj):
-		return obj.user
-	my_property.allow_tags = True
-	my_property.short_description = "Responsable"
+    def history_link(self,obj):
+        return u'<a href="/management/equipodecomputo/historia%s">Ver</a>' % (obj.id)
+    history_link.allow_tags = True
+    history_link.short_description = "Historia"
 
-	def history_link(self,obj):
-		return u'<a href="%s/history/">Ver</a>' % (obj.id)
-	history_link.allow_tags = True
-	history_link.short_description = "Historia"	
+    def acciones(self,obj):
+        return u' <a href="/admin/management/equipodecomputo/%s/">Editar</a> | <a href="/admin/management/equipodecomputo/%s/delete">Eliminar</a>' % (obj.id, obj.id)
+    acciones.allow_tags = True
+    acciones.short_description = "Acciones"
+
+    def get_queryset(self, request):
+        qs = super(EquipoDeComputoAdmin, self).get_queryset(request)
+        l = []
+        for g in request.user.groups.all():
+            l.append(g.name)
+
+        if request.user.is_superuser or 'administrador' in l or 'capturista' in l :
+            self.list_display_links = ['tipo']
+            return qs
+        self.list_display_links = None
+        return qs.filter(user=request.user)
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(EquipoDeComputoAdmin, self).__init__(*args, **kwargs)
 
 class FilterBase(admin.SimpleListFilter):
     def queryset(self, request, queryset):
@@ -82,7 +103,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     date_hierarchy = 'action_time'
 
-	#readonly_fields = LogEntry._meta.get_all_field_names()
+    #readonly_fields = LogEntry._meta.get_all_field_names()
 
     list_filter = [
         UserFilter,
@@ -139,3 +160,31 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 #admin.site.register(LogEntry, LogEntryAdmin)
 admin.site.register(EquipoDeComputo, EquipoDeComputoAdmin)
+
+admin.site.unregister(User)
+
+class MyUserAdmin(UserAdmin):
+    fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password', 'first_name', 'last_name', 'is_staff', 'groups')}
+        ),
+    )
+    list_display = ('username', 'email','grupo','acciones')
+
+    def acciones(self,obj):
+        return u' <a href="/admin/auth/user/%s/">Editar</a> | <a href="/admin/auth/user/%s/delete">Eliminar</a>' % (obj.id, obj.id)
+    acciones.allow_tags = True
+    acciones.short_description = "Acciones"
+
+    def grupo(self,obj):
+        gr=''
+        for g in obj.groups.values_list('name',flat=True):
+            gr= g
+        return u'%s' % (gr)
+
+    grupo.allow_tags = True
+    grupo.short_description = "Grupo"
+
+
+admin.site.register(User, MyUserAdmin)

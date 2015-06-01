@@ -20,11 +20,11 @@ class CustomMenu(Menu):
         #Menu.__init__(self)
         request = context['request']
         usid = request.user.id
-        usuario = User.objects.get(id=usid)
-        grupos = usuario.groups
-        #print grupos
+        l = []
+        for g in request.user.groups.all():
+            l.append(g.name)
 
-        if grupos == 'administrador' :
+        if 'administrador' in l :
             self.children += [
                 items.MenuItem(_('Dashboard'), reverse('admin:index')),
                 items.MenuItem('Generar Reportes',
@@ -58,6 +58,8 @@ class CustomMenu(Menu):
                 ),
                 
             ]
+
+        return super(CustomMenu, self).init_with_context(context)
 
     # def init_with_context(self, context):
     #     """

@@ -29,11 +29,11 @@ def setItems(n, obj, attr, values):
         setattr(obj[j],attr,values[j*i % m])
 
 class BreakdownPieDrawing(_DrawingEditorMixin,Drawing):
-    def __init__(self,width=400,height=200,*args,**kw):
+    def __init__(self,width=600,height=400,*args,**kw):
         apply(Drawing.__init__,(self,width,height)+args,kw)
         # adding a pie chart to the drawing 
         self._add(self,Pie(),name='pie',validate=None,desc=None)
-        self.pie.width                  = 150
+        self.pie.width                  = 300
         self.pie.height                 = self.pie.width
         self.pie.x                      = 20
         self.pie.y                      = (height-self.pie.height)/2
@@ -55,12 +55,12 @@ class BreakdownPieDrawing(_DrawingEditorMixin,Drawing):
         self.pie.slices.strokeWidth     = 1
         # adding legend
         self._add(self,Legend(),name='legend',validate=None,desc=None)
-        self.legend.x               = 200
+        self.legend.x               = 400
         self.legend.y               = height/2
         self.legend.dx              = 8
         self.legend.dy              = 8
         self.legend.fontName        = 'Helvetica'
-        self.legend.fontSize        = 7
+        self.legend.fontSize        = 14
         self.legend.boxAnchor       = 'w'
         self.legend.columnMaximum   = 10
         self.legend.strokeWidth     = 1
