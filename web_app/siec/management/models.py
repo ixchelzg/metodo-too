@@ -15,7 +15,7 @@ class Estado(models.Model):
 
 class EquipoDeComputo(models.Model):
     tipo = models.ForeignKey(Tipo)
-    user = models.ForeignKey(User,)
+    user = models.ForeignKey(User, limit_choices_to={'groups__name': "responsable"})
     marca = models.CharField(max_length=100)
     modelo = models.CharField(max_length=100)
     estado = models.ForeignKey(Estado)

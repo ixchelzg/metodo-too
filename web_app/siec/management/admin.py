@@ -28,7 +28,6 @@ class EquipoDeComputoAdmin(admin.ModelAdmin):
     ]
     inlines = [ReparacionInline]
     #que se ve en la pag del admin
-    list_display = ('tipo', 'my_property','marca', 'modelo', 'estado', 'ubicacion','history_link', 'acciones')
     #list_filter = ['pub_date']
     search_fields = ['marca', 'modelo']
 
@@ -55,7 +54,9 @@ class EquipoDeComputoAdmin(admin.ModelAdmin):
 
         if request.user.is_superuser or 'administrador' in l or 'capturista' in l :
             self.list_display_links = ['tipo']
+            self.list_display = ('tipo', 'my_property','marca', 'modelo', 'estado', 'ubicacion','history_link', 'acciones')
             return qs
+        self.list_display = ('tipo', 'my_property','marca', 'modelo', 'estado', 'ubicacion','history_link')
         self.list_display_links = None
         return qs.filter(user=request.user)
 
